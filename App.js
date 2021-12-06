@@ -4,6 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFonts } from "@expo-google-fonts/inter";
 import Nav from "./navigators/Nav";
 import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -20,9 +22,11 @@ export default function App() {
     );
   } else {
     return (
-      <NavigationContainer>
-        <Nav />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Nav />
+        </NavigationContainer>
+      </Provider>
     );
   }
 }
