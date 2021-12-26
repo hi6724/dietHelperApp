@@ -5,11 +5,14 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { connect } from "react-redux";
-import { addFood, deleteFood } from "../../redux/store";
 import { Alert, FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { addFood, deleteFood } from "../../redux/reducers/foodReducer";
 
-function HomeScreen({ dispatch, state }) {
+function HomeScreen() {
+  const state = useSelector((state) => state.foodReducer);
+  const dispatch = useDispatch();
+  const [todayFoods, setTodayFoods] = useState([]);
   const [progress, setProgress] = useState(0);
   const [nutrition1, setNutrition1] = useState(0);
   const [nutrition2, setNutrition2] = useState(0);
@@ -19,15 +22,19 @@ function HomeScreen({ dispatch, state }) {
   const navigation = useNavigation();
   useEffect(() => {
     const data = AsyncStorage.getItem("dietApp").then((data) => {
-      JSON.parse(data).map((food) => dispatch(addFood(food)));
+      try {
+        JSON.parse(data).map((food) => dispatch(addFood(food)));
+      } catch {}
     });
   }, []);
   useEffect(() => {
+    const today = new Date();
+    const newData = state?.value?.map((food) => console.log(new Date(food.id)));
     setNutrition1(0);
     setNutrition2(0);
     setNutrition3(0);
     setNutrition4(0);
-    state.map((food) => {
+    state?.value?.map((food) => {
       setNutrition1((prev) => Math.floor(prev + food.NUTR_CONT1 * 1));
       setNutrition2((prev) => Math.floor(prev + food.NUTR_CONT2 * 1));
       setNutrition3((prev) => Math.floor(prev + food.NUTR_CONT3 * 1));
@@ -44,9 +51,7 @@ function HomeScreen({ dispatch, state }) {
         text: "확인",
         onPress: async () => {
           const data = await AsyncStorage.getItem("dietApp");
-          const newData = JSON.parse(data).filter(
-            (food) => food.id !== item.id
-          );
+          const newData = JSON.parse(data).filter((food) => food.id !== item.id);
           dispatch(deleteFood(item.id));
           await AsyncStorage.setItem("dietApp", JSON.stringify(newData));
         },
@@ -57,12 +62,8 @@ function HomeScreen({ dispatch, state }) {
     <NutritionContainer2 onPress={() => deleteItem(item)}>
       <Title>{item.DESC_KOR}</Title>
       <Nutrition2>
-        <NutritionText2>
-          열량 : {Math.floor(item.NUTR_CONT1)}kcal
-        </NutritionText2>
-        <NutritionText2>
-          탄수화물 : {Math.floor(item.NUTR_CONT2)}g
-        </NutritionText2>
+        <NutritionText2>열량 : {Math.floor(item.NUTR_CONT1)}kcal</NutritionText2>
+        <NutritionText2>탄수화물 : {Math.floor(item.NUTR_CONT2)}g</NutritionText2>
         <NutritionText2>단백질 : {Math.floor(item.NUTR_CONT3)}g</NutritionText2>
         <NutritionText2>지방 : {Math.floor(item.NUTR_CONT4)}g</NutritionText2>
         <NutritionText2>1회 제공량 : {item.SERVING_WT}g</NutritionText2>
@@ -102,7 +103,7 @@ function HomeScreen({ dispatch, state }) {
       </Overview>
       <Detail>
         <FlatList
-          data={state}
+          data={state.value}
           renderItem={renderItem}
           keyExtractor={(_, index) => index}
           // onEndReached={() => refetch()}
@@ -121,13 +122,7 @@ function HomeScreen({ dispatch, state }) {
   );
 }
 
-function mapStateToProps(state) {
-  return { state };
-}
-function mapDispatchToProps(dispatch) {
-  return { dispatch };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default HomeScreen;
 
 const Container = styled.View`
   flex: 1;

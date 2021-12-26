@@ -62,9 +62,7 @@ export default Nav = () => {
           header: ({}) => {
             return (
               <SafeAreaView style={styles.homeHeader}>
-                <Text style={styles.date}>
-                  {`${currentMonth}.${today} ${clock}`}
-                </Text>
+                <Text style={styles.date}>{`${currentMonth}.${today} ${clock}`}</Text>
               </SafeAreaView>
             );
           },

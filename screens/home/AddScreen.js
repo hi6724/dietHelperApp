@@ -6,10 +6,11 @@ import nutritionApp from "../../nutritionApp";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { connect } from "react-redux";
-import { addFood } from "../../redux/store";
+import { addFood } from "../../redux/reducers/foodReducer";
+import { useDispatch } from "react-redux";
 
-function AddScreen({ dispatch, state }) {
+function AddScreen() {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const { register, handleSubmit, getValues, setValue, watch } = useForm();
   const [results, setResults] = useState([]);
@@ -52,7 +53,10 @@ function AddScreen({ dispatch, state }) {
   };
   const Item = ({ item }) => (
     <NutritionContainer onPress={() => addItem(item)}>
-      <Title>{item.DESC_KOR}</Title>
+      <Title>
+        {item.DESC_KOR}
+        {item.ANIMAL_PLANT.length > 0 ? `(${item.ANIMAL_PLANT})` : ""}
+      </Title>
       <Nutrition>
         <NutritionText>열량 : {item.NUTR_CONT1}kcal</NutritionText>
         <NutritionText>탄수화물 : {item.NUTR_CONT2}g</NutritionText>
@@ -94,13 +98,8 @@ function AddScreen({ dispatch, state }) {
     </Container>
   );
 }
-function mapStateToProps(state) {
-  return { state };
-}
-function mapDispatchToProps(dispatch) {
-  return { dispatch };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(AddScreen);
+
+export default AddScreen;
 
 const SearchIcon = styled.TouchableOpacity`
   position: absolute;

@@ -1,11 +1,10 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import { useFonts } from "@expo-google-fonts/inter";
 import Nav from "./navigators/Nav";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store } from "./redux/store";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -30,15 +29,3 @@ export default function App() {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontFamily: "BM-Pro",
-  },
-});
