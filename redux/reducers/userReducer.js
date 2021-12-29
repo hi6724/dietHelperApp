@@ -6,11 +6,11 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    login(state) {
-      state.value++;
+    login(state, action) {
+      state.value = action.payload;
     },
     logout(state) {
-      state.value--;
+      state.value = null;
     },
   },
 });

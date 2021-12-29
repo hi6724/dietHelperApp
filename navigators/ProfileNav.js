@@ -3,7 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import ProfileSettingScreen from "../screens/profile/ProfileSettingScreen";
-import WelcomeScreen from "../screens/profile/WelcomeScreen";
 
 const Stack = createStackNavigator();
 export default ProfileNav = () => {
@@ -14,9 +13,8 @@ export default ProfileNav = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={value ? "ProfileScreen" : "WelcomeScreen"}
+      initialRouteName={value ? "ProfileScreen" : "ProfileSetting"}
     >
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="ProfileSetting" component={ProfileSettingScreen} />
     </Stack.Navigator>

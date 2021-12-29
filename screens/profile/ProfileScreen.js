@@ -20,14 +20,17 @@ export default ProfileScreen = ({ navigation }) => {
         <Avatar resizeMode="contain" source={profileData[1].image} />
         <Username>{profileData[1].text}</Username>
       </AvatarContainer>
-      <WhiteBtn>
+      <WhiteView>
         <BtnText>몸무게 : 78kg / 키 : 178cm</BtnText>
-      </WhiteBtn>
-      <WhiteBtn>
-        <BtnText>목표몸무게 : 65kg</BtnText>
-      </WhiteBtn>
-      <WhiteBtn>
+      </WhiteView>
+      <WhiteView>
+        <BtnText>목표몸무게까지 : -13kg</BtnText>
+      </WhiteView>
+      <WhiteView>
         <BtnText>지금까지 참아온 양 : 3498kcal</BtnText>
+      </WhiteView>
+      <WhiteBtn onPress={() => navigation.navigate("ProfileSetting")}>
+        <BtnText>설정변경</BtnText>
       </WhiteBtn>
     </Container>
   );
@@ -53,6 +56,11 @@ const Username = styled.Text`
   font-size: 22px;
 `;
 const WhiteBtn = styled.TouchableOpacity`
+  width: 100%;
+  padding: 15px;
+  border-bottom-width: 2px;
+`;
+const WhiteView = styled.View`
   width: 100%;
   padding: 15px;
   border-bottom-width: 2px;
